@@ -1,9 +1,10 @@
+import logging
 from typing import cast
 
 import uvicorn
 from dotenv import dotenv_values
 from pydantic import BaseSettings
-from starlite import Starlite, State, get, OpenAPIConfig
+from starlite import Starlite, State, OpenAPIConfig, LoggingConfig
 
 from src.controller.car_controller import CarController
 from src.repository.db import MongoDatabaseConnection
@@ -20,6 +21,15 @@ class AppSettings(BaseSettings):
 
 
 settings = AppSettings()
+
+logger = logging.getLogger()
+logging_config = LoggingConfig(
+    loggers={
+        "my_app": {
+            "level": "INFO",
+        }
+    }
+)
 
 
 def get_db_connection(state: State) -> MongoDatabaseConnection:
@@ -44,14 +54,12 @@ async def define_car_service(state: State) -> CarService:
     return cast("CarService", state.car_service)
 
 
-@get("/")
-def hello_world() -> dict[str, str]:
-    """Handler function that returns a greeting dictionary."""
-    return {"hello": "world"}
-
-
-app = Starlite(route_handlers=[CarController, hello_world], on_startup=[get_db_connection, define_car_service],
-               on_shutdown=[close_db_connection], openapi_config=OpenAPIConfig(title="Car Service", version="1.0.0"))
+app = Starlite(route_handlers=[CarController], on_startup=[get_db_connection, define_car_service],
+               on_shutdown=[close_db_connection], openapi_config=OpenAPIConfig(title="Car Service", version="1.0.0"),
+               logging_config=logging_config)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    ip = "127.0.0.1"
+    port = 8000
+    logger.info(f"Swagger : http://{ip}:{port}/schema/swagger")
+    uvicorn.run(app, host=ip, port=port)
