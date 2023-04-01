@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import cast
 
 import uvicorn
@@ -58,8 +59,5 @@ app = Starlite(route_handlers=[CarController], on_startup=[get_db_connection, de
                on_shutdown=[close_db_connection], openapi_config=OpenAPIConfig(title="Car Service", version="1.0.0"),
                logging_config=logging_config)
 
-if __name__ == "__main__":
-    ip = "127.0.0.1"
-    port = 8000
-    logger.info(f"Swagger : http://{ip}:{port}/schema/swagger")
-    uvicorn.run(app, host=ip, port=port)
+logger.info(f"Swagger : http://127.0.0.1:{os.getenv('PORT', 8000)}/schema/swagger")
+
