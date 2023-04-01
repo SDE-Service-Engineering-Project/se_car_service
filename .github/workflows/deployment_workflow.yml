@@ -19,6 +19,9 @@ env:
   EXTERNAL_PORT: 32001
   DOCKER_USER: ${{ secrets.DOCKER_USER }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  MONGO_HOSTNAME: ${{ secrets.MONGO_HOSTNAME }}
+  MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
 
 jobs:
   setup-build-publish-deploy:
