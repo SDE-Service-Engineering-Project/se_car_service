@@ -1,4 +1,4 @@
-FROM python:3.11-alpine as runtime-image
+FROM python:3.11-alpine
 WORKDIR /code
 COPY ./ /code/
 RUN pip install --no-cache-dir --user --upgrade -r /code/requirements.txt
