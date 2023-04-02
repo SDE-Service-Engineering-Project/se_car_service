@@ -1,7 +1,7 @@
 from starlite import Controller, get, State, post, Body, patch, delete
 
 from src.auth.auth_controller import is_authorized
-from src.dto.dtos import ReadCarDTO, ModifyCarDTO, CreateCarDTO
+from src.dto.car_dto import ReadCarDTO, ModifyCarDTO, CreateCarDTO
 
 
 class CarController(Controller):

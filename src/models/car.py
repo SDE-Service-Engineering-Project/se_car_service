@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from src.dto.dtos import ReadCarDTO, CreateCarDTO
+from src.dto.car_dto import ReadCarDTO, CreateCarDTO
 
 
 class Car(BaseModel):

@@ -3,14 +3,14 @@ from datetime import datetime
 from bson import ObjectId
 from pymongo.collection import Collection
 
-from src.dto.dtos import ModifyCarDTO, CreateCarDTO, CreateCarConfirmedDTO, ReadCarDTO
+from src.dto.car_dto import ModifyCarDTO, CreateCarDTO, CreateCarConfirmedDTO, ReadCarDTO
 from src.models.car import Car
 
 
 class CarService:
-    def __init__(self, db):
+    def __init__(self, db, collection_name):
         self.db = db
-        self.collection: Collection = self._get_collection()
+        self.collection: Collection = self._get_collection(collection_name)
 
     def fetch_all_cars(self) -> list[ReadCarDTO]:
         return [Car.fromMongo(x).toReadDTO() for x in list(self.collection.find())]
@@ -39,5 +39,5 @@ class CarService:
     def delete_all_cars(self) -> None:
         self.collection.delete_many({})
 
-    def _get_collection(self):
-        return self.db.get_collection(collection_name="cars")
+    def _get_collection(self, collection_name):
+        return self.db.get_collection(collection_name=collection_name)

@@ -5,14 +5,14 @@ from _pytest.fixtures import fixture
 from pymongo.collection import Collection
 from pymongo.database import Database
 
-from src.dto.dtos import CreateCarDTO, ModifyCarDTO
+from src.dto.car_dto import CreateCarDTO, ModifyCarDTO
 from src.services.car_service import CarService
 
 
 @fixture(scope="module")
 @patch("src.services.car_service.CarService._get_collection")
 def car_service(mock_get):
-    service = CarService(db=Mock(Database))
+    service = CarService(db=Mock(Database), collection_name="cars")
     mock_get.return_value = Mock(Collection)
     return service
 
