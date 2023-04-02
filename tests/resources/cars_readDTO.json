@@ -1,0 +1,22 @@
+[
+  {
+    "id": "64254a66a468c0902635a358",
+    "brand": "Toyota",
+    "model": "bla",
+    "construction_year": 1925,
+    "price": 12.5,
+    "currency": "EUR",
+    "createdOn": "2023-04-01T13:22:15.901000",
+    "modifiedOn": "2023-04-01T13:22:15.901000"
+  },
+  {
+    "id": "642813e7d3de8bbe6cd1e5cf",
+    "brand": "Toyota",
+    "model": "Cambri",
+    "construction_year": 1955,
+    "price": 12000,
+    "currency": "EUR",
+    "createdOn": "2023-04-01T13:22:15.901000",
+    "modifiedOn": "2023-04-01T13:22:15.901000"
+  }
+]
