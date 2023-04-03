@@ -13,7 +13,6 @@ from src.services.booking_service import BookingService
 from src.services.car_service import CarService
 from src.services.kafka_consumer import ConsumerTask, run_consumer
 
-# config = dotenv_values(".env")
 load_dotenv()
 
 

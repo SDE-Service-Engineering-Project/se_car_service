@@ -55,7 +55,6 @@ class ProducerTask(object):
                 "endDate": datetime.datetime.now().timestamp(),
                 "action": "update"
             }
-            # message = 'This is a test message #{0}'.format(self.counter)
             key = 'key'
             sleep = 10  # Short sleep for flow control
             try:

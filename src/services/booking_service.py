@@ -20,7 +20,7 @@ class BookingService:
             message_dict = json.loads(message)
             kafka_booking = KafkaBookingDTO(**message_dict)
         except AttributeError as e:
-            pass
+            log.error(f"Could not parse message: {e}")
         match kafka_booking.action:
             case "create":
                 result = self.insert_booking(kafka_booking)
@@ -31,8 +31,6 @@ class BookingService:
             case "delete":
                 result = self.delete_booking(kafka_booking.id)
                 log.info(f"Booking updated: {result.id}")
-            case _:
-                pass
 
     def insert_booking(self, booking_create_dto: KafkaBookingDTO) -> KafkaBookingConfirmationDTO:
         booking_dict = booking_create_dto.dict()
