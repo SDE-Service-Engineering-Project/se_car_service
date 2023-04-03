@@ -1,16 +1,17 @@
 import asyncio
+import os
 import sys
 
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 
 from example.kafka_producer import ProducerTask
 
 
 async def run_tasks():
-    config = dotenv_values(".env")
-    kafka_servers = config["KAFKA_SERVERS"]
-    kafka_username = config["KAFKA_USERNAME"]
-    kafka_api_token = config["KAFKA_API_TOKEN"]
+    load_dotenv()
+    kafka_servers = os.getenv("KAFKA_SERVERS")
+    kafka_username = os.getenv("KAFKA_USERNAME")
+    kafka_api_token = os.getenv("KAFKA_API_TOKEN")
 
     driver_options = {
         'bootstrap.servers': kafka_servers,

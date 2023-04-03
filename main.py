@@ -3,7 +3,7 @@ import logging
 import os
 from typing import cast
 
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 from pydantic import BaseSettings
 from starlite import Starlite, State, OpenAPIConfig, LoggingConfig
 
@@ -13,17 +13,18 @@ from src.services.booking_service import BookingService
 from src.services.car_service import CarService
 from src.services.kafka_consumer import ConsumerTask, run_consumer
 
-config = dotenv_values(".env")
+# config = dotenv_values(".env")
+load_dotenv()
 
 
 class AppSettings(BaseSettings):
     db_name = "car_service"
-    mongo_hostname = config["MONGO_HOSTNAME"]
-    mongo_username = config["MONGO_USERNAME"]
-    mongo_password = config["MONGO_PASSWORD"]
-    kafka_servers = config["KAFKA_SERVERS"]
-    kafka_username = config["KAFKA_USERNAME"]
-    kafka_api_token = config["KAFKA_API_TOKEN"]
+    mongo_hostname = os.getenv("MONGO_HOSTNAME")
+    mongo_username = os.getenv("MONGO_USERNAME")
+    mongo_password = os.getenv("MONGO_PASSWORD")
+    kafka_servers = os.getenv("KAFKA_SERVERS")
+    kafka_username = os.getenv("KAFKA_USERNAME")
+    kafka_api_token = os.getenv("KAFKA_API_TOKEN")
 
 
 settings = AppSettings()
@@ -82,7 +83,7 @@ async def define_booking_service(state: State) -> BookingService:
 async def start_kafka_consumer(state: State) -> None:
     # handle kafka events
     if getattr(state, "kafka_consumer", None):
-        await asyncio.create_task(run_consumer(state.kafka_consumer))
+        asyncio.create_task(run_consumer(state.kafka_consumer))
 
 
 async def stop_kafka_consumer(state: State) -> None:
