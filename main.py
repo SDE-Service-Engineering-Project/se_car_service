@@ -52,13 +52,15 @@ async def get_db_connection(state: State) -> MongoDatabaseConnection:
         state.db_connection = MongoDatabaseConnection(db_name=settings.db_name, mongo_hostname=settings.mongo_hostname,
                                                       mongo_username=settings.mongo_username,
                                                       mongo_password=settings.mongo_password)
+        log.info("Connecting to db")
     return cast("MongoDatabaseConnection", state.db_connection)
 
 
 async def close_db_connection(state: State) -> None:
     """Closes the db connection stored in the application State object."""
-    if getattr(state, "engine", None):
-        await cast("MongoDatabaseConnection", state.engine).close_connection()
+    if getattr(state, "db_connection", None):
+        log.info("Closing db connection")
+        await cast("MongoDatabaseConnection", state.db_connection).close_connection()
 
 
 async def define_car_service(state: State) -> CarService:
@@ -79,12 +81,14 @@ async def define_booking_service(state: State) -> BookingService:
 
 async def start_kafka_consumer(state: State) -> None:
     # handle kafka events
-    asyncio.create_task(run_consumer(state.kafka_consumer))
+    if getattr(state, "kafka_consumer", None):
+        await asyncio.create_task(run_consumer(state.kafka_consumer))
 
 
 async def stop_kafka_consumer(state: State) -> None:
     # handle kafka events
-    await state.kafka_consumer.stop()
+    if getattr(state, "kafka_consumer", None):
+        await state.kafka_consumer.stop()
 
 
 app = Starlite(route_handlers=[CarController],

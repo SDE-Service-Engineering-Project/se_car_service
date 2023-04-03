@@ -54,10 +54,11 @@ class ConsumerTask(object):
             handler(event)
 
     def stop(self):
+        log.info("Stopping kafka consumer")
         self.running = False
 
     async def run(self):
-        print('The consumer has started')
+        log.info('The Kafka consumer has started')
         self.consumer.subscribe([self.topic_name])
         while self.running:
             msg = self.consumer.poll(1)
