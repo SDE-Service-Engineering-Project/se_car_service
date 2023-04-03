@@ -65,7 +65,7 @@ jobs:
           kubectl create secret generic $DEPLOYMENT_NAME --from-literal=KAFKA_SERVERS=${KAFKA_SERVERS} \
           --from-literal=KAFKA_USERNAME=${KAFKA_USERNAME} --from-literal=KAFKA_API_TOKEN=${KAFKA_API_TOKEN} \
           --from-literal=MONGO_PASSWORD=${MONGO_PASSWORD} --from-literal=MONGO_USERNAME=${MONGO_USERNAME} \
-          --from-literal=MONGO_HOSTNAME=${MONGO_HOSTNAME} --dry-run -o yaml > secrets.yaml
+          --from-literal=MONGO_HOSTNAME=${MONGO_HOSTNAME} --dry-run=client -o yaml > secrets.yaml
           kubectl apply -f secrets.yaml
           kubectl create deployment $DEPLOYMENT_NAME --image="$DOCKER_USER"/"$IMAGE_NAME":"$GITHUB_SHA" --dry-run=client -o yaml > deployment.yaml
           kubectl apply -f deployment.yaml
