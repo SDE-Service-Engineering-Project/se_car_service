@@ -16,8 +16,8 @@
  Licensed Materials - Property of IBM
  © Copyright IBM Corp. 2015-2018
 """
-import asyncio
 import logging
+import time
 
 from confluent_kafka import Consumer
 
@@ -63,12 +63,12 @@ class ConsumerTask(object):
         log.info("Stopping kafka consumer")
         self.running = False
 
-    async def run(self):
+    def run(self):
         log.info('The Kafka consumer has started')
         self.consumer.subscribe([self.topic_name])
         while self.running:
             msg = self.consumer.poll(5)
-            print(f"polled: {msg}")
+            print(f"consuming message {msg}")
             if msg is not None and msg.error() is None:
                 log.info('Message consumed: topic={0}, partition={1}, offset={2}, key={3}, value={4}'.format(
                     msg.topic(),
@@ -80,6 +80,6 @@ class ConsumerTask(object):
             elif msg is not None and msg.error() is not None:
                 log.error('Error consuming message: {0}'.format(msg.error()))
             else:
-                await asyncio.sleep(1)
+                time.sleep(1)
         self.consumer.unsubscribe()
         self.consumer.close()

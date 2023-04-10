@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+from concurrent.futures.thread import ThreadPoolExecutor
 from typing import cast
 
 from dotenv import load_dotenv
@@ -83,7 +84,10 @@ async def define_booking_service(state: State) -> BookingService:
 async def start_kafka_consumer(state: State) -> None:
     # handle kafka events
     if getattr(state, "kafka_consumer", None):
-        asyncio.create_task(state.kafka_consumer.run())
+        # Kafka consumer is blocking, so we need to run it in a separate thread
+        loop = asyncio.get_running_loop()
+        executor = ThreadPoolExecutor(max_workers=1)
+        loop.run_in_executor(executor, state.kafka_consumer.run)
 
 
 async def stop_kafka_consumer(state: State) -> None:
