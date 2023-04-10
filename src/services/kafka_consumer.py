@@ -74,10 +74,3 @@ class ConsumerTask(object):
                 await asyncio.sleep(1)
         self.consumer.unsubscribe()
         self.consumer.close()
-
-
-async def run_consumer(consumer):
-    tasks = [asyncio.ensure_future(consumer.run())]
-    done, pending = await asyncio.wait(tasks)
-    for future in done | pending:
-        future.result()

@@ -48,12 +48,11 @@ class ProducerTask(object):
         while self.running:
 
             message = {
-                # "id": str(ObjectId()),
-                "id": "6429d04849f9722d22a585f7",
-                "carId": "UPDATED!",
-                "startDate": datetime.datetime.now().timestamp(),
-                "endDate": datetime.datetime.now().timestamp(),
-                "action": "update"
+                "id": str(ObjectId()),
+                "carId": "64254a66a468c0902635a358",
+                "startDate": 1672527600,
+                "endDate": 1673305200,
+                "action": "create"
             }
             key = 'key'
             sleep = 10  # Short sleep for flow control

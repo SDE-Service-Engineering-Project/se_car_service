@@ -11,7 +11,7 @@ from src.controller.car_controller import CarController
 from src.repository.db import MongoDatabaseConnection
 from src.services.booking_service import BookingService
 from src.services.car_service import CarService
-from src.services.kafka_consumer import ConsumerTask, run_consumer
+from src.services.kafka_consumer import ConsumerTask
 
 load_dotenv()
 
@@ -66,7 +66,8 @@ async def close_db_connection(state: State) -> None:
 async def define_car_service(state: State) -> CarService:
     """Returns the car service."""
     if not getattr(state, "car_service", None):
-        state.car_service = CarService(state.db_connection, collection_name="cars")
+        state.car_service = CarService(state.db_connection, car_collection_name="cars",
+                                       booking_collection_name="bookings")
     return cast("CarService", state.car_service)
 
 
@@ -82,7 +83,7 @@ async def define_booking_service(state: State) -> BookingService:
 async def start_kafka_consumer(state: State) -> None:
     # handle kafka events
     if getattr(state, "kafka_consumer", None):
-        asyncio.create_task(run_consumer(state.kafka_consumer))
+        asyncio.create_task(state.kafka_consumer.run())
 
 
 async def stop_kafka_consumer(state: State) -> None:

@@ -13,7 +13,7 @@ env:
   IBM_CLOUD_REGION: eu-de
   K8S_NAMESPACE: part2
   IMAGE_NAME: se-car-service-part2 # ADAPT!
-  IKS_CLUSTER: cgbisc9f0brfqd97s8d0 # name or id of cluster
+  IKS_CLUSTER: ${{ secrets.IKS_CLUSTER }} # name or id of cluster
   DEPLOYMENT_NAME: se-car-service-part2 # ADAPT!
   INTERNAL_PORT: 8000 # ADAPT!
   EXTERNAL_PORT: 32001
