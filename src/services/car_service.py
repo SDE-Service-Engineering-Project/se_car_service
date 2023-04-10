@@ -35,9 +35,7 @@ class CarService:
 
     @validate_object_id
     def check_car_existence(self, id: str) -> None:
-        if self.car_collection.find_one({"_id": id}) is not None:
-            return None
-        else:
+        if self.car_collection.find_one({"_id": id}) is None:
             raise NotFoundException(f"Car with id {id} does not exist.")
 
     def insert_car(self, car_create_dto: CreateCarDTO) -> CreateCarConfirmedDTO:
