@@ -2,10 +2,10 @@ from pydantic import BaseModel, Field
 
 
 class KafkaBookingDTO(BaseModel):
-    id: str = Field(alias="_id")
+    bookingId: str = Field(alias="_id")
     carId: str
-    startDate: int
-    endDate: int
+    bookedFrom: int
+    bookedUntil: int
     action: str
 
     class Config:

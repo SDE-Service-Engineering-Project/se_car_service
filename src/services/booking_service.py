@@ -28,11 +28,11 @@ class BookingService:
             case "update":
                 self.update_booking(kafka_booking)
             case "delete":
-                self.delete_booking(kafka_booking.id)
+                self.delete_booking(kafka_booking.bookingId)
 
     def insert_booking(self, booking_create_dto: KafkaBookingDTO) -> None:
         booking_dict = booking_create_dto.dict()
-        booking_dict["_id"] = ObjectId(booking_dict.pop("id"))
+        booking_dict["_id"] = ObjectId(booking_dict.pop("bookingId"))
         try:
             new_booking = self.collection.insert_one(booking_dict)  #
             log.info(f"Booking created: {new_booking.inserted_id}")
@@ -41,9 +41,9 @@ class BookingService:
 
     def update_booking(self, booking_modify_dto: KafkaBookingDTO) -> None:
         booking_dict = booking_modify_dto.dict()
-        booking_dict["_id"] = ObjectId(booking_dict.pop("id"))
+        booking_dict["_id"] = ObjectId(booking_dict.pop("bookingId"))
         self.collection.update_one({"_id": ObjectId(booking_dict['_id'])}, {"$set": booking_dict})
-        log.info(f"Booking updated: {booking_modify_dto.id}")
+        log.info(f"Booking updated: {booking_modify_dto.bookingId}")
 
     def delete_booking(self, id: str) -> None:
         self.collection.delete_one({"_id": ObjectId(id)})

@@ -42,7 +42,7 @@ def test_fetch_all_cars_assert_size(car_service, mongo_car_list):
 
 def test_fetch_all_cars_assert_fields(car_service, mongo_car_list):
     car_service.car_collection.find.return_value = mongo_car_list
-    assert list(dict(car_service.fetch_all_cars()[0]).keys()) == ["id", "brand", "model", "construction_year", "price",
+    assert list(dict(car_service.fetch_all_cars()[0]).keys()) == ["carId", "brand", "model", "constructionYear", "price",
                                                                   "currency", "createdOn", "modifiedOn"]
 
 
@@ -57,19 +57,19 @@ def test_insert_car_success(car_service):
     car_create_dto = CreateCarDTO(**{
         "brand": "Toyota",
         "model": "Cambri",
-        "construction_year": 1955,
+        "constructionYear": 1955,
         "price": 12000,
         "currency": "EUR"
     })
     response = car_service.insert_car(car_create_dto=car_create_dto)
-    assert response.id == new_id
+    assert response.carId == new_id
 
 
 def test_modify_car(car_service, mongo_car_list, dto_car_list):
     modify_car_dto = ModifyCarDTO(**{
         "brand": "Toyota",
         "model": "Cambri",
-        "construction_year": 1955,
+        "constructionYear": 1955,
         "price": 12000,
         "currency": "EUR"
     })

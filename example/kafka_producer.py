@@ -17,7 +17,6 @@
  © Copyright IBM Corp. 2015-2018
 """
 import asyncio
-import datetime
 import json
 
 from bson import ObjectId
@@ -29,7 +28,6 @@ class ProducerTask(object):
     def __init__(self, conf, topic_name):
         self.topic_name = topic_name
         self.producer = Producer(conf)
-        self.counter = 0
         self.running = True
 
     def stop(self):
@@ -48,18 +46,17 @@ class ProducerTask(object):
         while self.running:
 
             message = {
-                "id": str(ObjectId()),
-                "carId": "64254a66a468c0902635a358",
-                "startDate": 1672527600,
-                "endDate": 1673305200,
+                "bookingId": str(ObjectId()),
+                "carId": "643ad77b5dd2e99a5b2fd2f8",
+                "bookedFrom": 1672527600,
+                "bookedUntil": 1673305200,
                 "action": "create"
             }
             key = 'key'
-            sleep = 10  # Short sleep for flow control
+            sleep = 0.1  # Short sleep for flow control
             try:
                 self.producer.produce(self.topic_name, json.dumps(message), key, -1, self.on_delivery)
                 self.producer.poll(0)
-                self.counter += 1
             except Exception as err:
                 print('Failed sending message {0}'.format(message))
                 print(err)
