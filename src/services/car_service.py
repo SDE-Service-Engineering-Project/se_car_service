@@ -29,19 +29,20 @@ class CarService:
     def fetch_available_cars(self, start_date: int, end_date: int) -> list[ReadCarDTO]:
         cars: list[ReadCarDTO] = self.fetch_all_cars()
         booked_car_ids: list[str] = [x["carId"] for x in self.booking_collection.find(
-            {"$or": [{"startDate": {"$gte": start_date, "$lte": end_date}},
-                     {"endDate": {"$gte": start_date, "$lte": end_date}}]})]
-        return [x for x in cars if x.id not in booked_car_ids]
+            {"$or": [{"bookedFrom": {"$gte": start_date, "$lte": end_date}},
+                     {"bookedUntil": {"$gte": start_date, "$lte": end_date}}]})]
+        return [x for x in cars if x.carId not in booked_car_ids]
 
     @validate_object_id
     def check_car_existence(self, id: str) -> None:
-        if self.car_collection.find_one({"_id": id}) is None:
+        if self.car_collection.find_one({"_id": ObjectId(id)}) is None:
             raise NotFoundException(f"Car with id {id} does not exist.")
 
     def insert_car(self, car_create_dto: CreateCarDTO) -> CreateCarConfirmedDTO:
-        car = Car.fromCreateDTO(car_create_dto)
-        new_car = self.car_collection.insert_one(car.dict())
-        return CreateCarConfirmedDTO(id=str(new_car.inserted_id))
+        car_dict = Car.fromCreateDTO(car_create_dto).dict()
+        car_dict.pop("id")
+        new_car = self.car_collection.insert_one(car_dict)
+        return CreateCarConfirmedDTO(carId=str(new_car.inserted_id))
 
     @validate_object_id
     def modify_car(self, id: str, car_modify_dto: ModifyCarDTO) -> ReadCarDTO:

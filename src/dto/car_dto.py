@@ -1,14 +1,13 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
 
 
 class ReadCarDTO(BaseModel):
-    id: str
+    carId: str
     brand: str
     model: str
-    construction_year: int
+    constructionYear: int
     price: float
     currency: str
     createdOn: datetime
@@ -18,18 +17,18 @@ class ReadCarDTO(BaseModel):
 class CreateCarDTO(BaseModel):
     brand: str
     model: str
-    construction_year: int
+    constructionYear: int
     price: float
     currency: str
 
 
 class CreateCarConfirmedDTO(BaseModel):
-    id: str
+    carId: str
 
 
 class ModifyCarDTO(BaseModel):
     brand: str
     model: str
-    construction_year: int
+    constructionYear: int
     price: float
     currency: str
