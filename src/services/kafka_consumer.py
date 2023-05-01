@@ -69,11 +69,10 @@ class ConsumerTask(object):
         while self.running:
             msg = self.consumer.poll(1)
             if msg is not None and msg.error() is None:
-                log.info('Message consumed: topic={0}, partition={1}, offset={2}, key={3}, value={4}'.format(
+                log.info('Message consumed: topic={0}, partition={1}, offset={2}, value={3}'.format(
                     msg.topic(),
                     msg.partition(),
                     msg.offset(),
-                    msg.key().decode('utf-8'),
                     msg.value().decode('utf-8')))
                 self.fire_event(msg.value().decode('utf-8'))
             elif msg is not None and msg.error() is not None:
