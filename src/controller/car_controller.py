@@ -4,7 +4,7 @@ from src.dto.car_dto import ReadCarDTO, ModifyCarDTO, CreateCarDTO
 
 
 class CarController(Controller):
-    path = "/cars"
+    path = "/api/v1/cars"
 
     @get("/", description="List all cars.")
     async def list_cars(self, state: State) -> list[ReadCarDTO]:
