@@ -16,7 +16,7 @@ env:
   IKS_CLUSTER: ${{ secrets.IKS_CLUSTER }} # name or id of cluster
   DEPLOYMENT_NAME: se-car-service-part2 # ADAPT!
   INTERNAL_PORT: 8000 # ADAPT!
-  EXTERNAL_PORT: 32001
+  EXTERNAL_PORT: 80
   DOCKER_USER: ${{ secrets.DOCKER_USER }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   MONGO_HOSTNAME: ${{ secrets.MONGO_HOSTNAME }}
@@ -71,6 +71,6 @@ jobs:
           kubectl apply -f deployment.yaml
           kubectl set env deployment/$DEPLOYMENT_NAME --from=secret/$DEPLOYMENT_NAME
           kubectl rollout status deployment/$DEPLOYMENT_NAME
-          kubectl create service nodeport $DEPLOYMENT_NAME --tcp=$EXTERNAL_PORT:$INTERNAL_PORT --node-port=$EXTERNAL_PORT --dry-run=client -o yaml > service.yaml
+          kubectl create service clusterip $DEPLOYMENT_NAME --tcp=$EXTERNAL_PORT:$INTERNAL_PORT --dry-run=client -o yaml > service.yaml
           kubectl apply -f service.yaml
           kubectl get services -o wide
