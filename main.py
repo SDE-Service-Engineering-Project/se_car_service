@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from pydantic import BaseSettings
 from starlite import Starlite, State, OpenAPIConfig, LoggingConfig, HTTPException
 
-from exception.exception_handler import json_exception_handler
+from src.exception.exception_handler import json_exception_handler
 from src.controller.car_controller import CarController
 from src.repository.db import MongoDatabaseConnection
 from src.services.booking_service import BookingService
