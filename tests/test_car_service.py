@@ -42,7 +42,8 @@ def test_fetch_all_cars_assert_size(car_service, mongo_car_list):
 
 def test_fetch_all_cars_assert_fields(car_service, mongo_car_list):
     car_service.car_collection.find.return_value = mongo_car_list
-    assert list(dict(car_service.fetch_all_cars()[0]).keys()) == ["carId", "brand", "model", "constructionYear", "price",
+    assert list(dict(car_service.fetch_all_cars()[0]).keys()) == ["carId", "brand", "model", "constructionYear",
+                                                                  "price",
                                                                   "currency", "createdOn", "modifiedOn"]
 
 
