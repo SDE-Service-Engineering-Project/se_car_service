@@ -1,18 +1,19 @@
-# Currency Converter
-The currency converter retrieves the current exchange rates from the European Central Bank (ECB) daily, caches them, and offers two operations to the booking_service via gRPC.
+# Car Service
+The car service manages cars which are persisted in a MongoDB, retrieves bookings from a Kafka topic and stores a subset of the booking-information in MongoDB.
+## Tools and technologies
+### Libraries
+* Language:				Python 3.11
+* Web Framework:			StarLite 1.5
+* Mongo Client:				Pymongo
+* Kafka Consumer:			confluent-kafka
+* Test framework: 			Pytest
+### Other technology
+* Persistent Storage:			MongoDB (Atlas Cloud DB)
+* IBM Event Streams (Kafka):		IBM Event Streams (free version)
+## Data model
+The service persists two types of data elements: cars and a slimmed-down version of bookings in MongoDB.
+Cars and bookings are stored within the same database in individual collections.
 
-## Tools and Technologies
-
-* Language: Python 3.11
-* XML parsing library: lxml
-* gRPC library: grpcio
-* Test framework: Pytest
-
-## Data Model
-
-None, the currencies are not persisted in any database. The rates are only kept in memory.
-
-## Description of Interactions between Microservices
-The currency converter only calls one downstream system, which is not part of the implementation, namely the ECB website hosting the currency exchange rates.
-
-The currency exchange rate cache is cleared daily at 5 PM UTC / 7 PM CET. The ECB renews the file daily at around 4 PM CET, however, they do not always renew it exactly at the same time, therefore these few hours buffer.
+## Description of interactions between microservices
+As shown in the architecture overview, the service is accessed by the API gateway (list cars, list available cars), as well as by the booking service (get car) via REST.
+Additionally, the service consumes booking messages from Kafka produced by the booking service and persists them in MongoDB.
