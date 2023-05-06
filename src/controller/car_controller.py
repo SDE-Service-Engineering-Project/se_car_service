@@ -15,8 +15,8 @@ class CarController(Controller):
         return state.car_service.fetch_one_car(id=id)
 
     @get("/available", description="List all available cars.")
-    async def list_available_cars(self, start_date: int, end_date: int, state: State) -> list[ReadCarDTO]:
-        return state.car_service.fetch_available_cars(start_date, end_date)
+    async def list_available_cars(self, neededFrom: int, neededTo: int, state: State) -> list[ReadCarDTO]:
+        return state.car_service.fetch_available_cars(neededFrom, neededTo)
 
     @head("/{id:str}", description="Check if a car exists.")
     async def ensure_car_existence(self, id: str, state: State) -> None:
