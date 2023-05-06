@@ -6,8 +6,9 @@ from typing import cast
 
 from dotenv import load_dotenv
 from pydantic import BaseSettings
-from starlite import Starlite, State, OpenAPIConfig, LoggingConfig
+from starlite import Starlite, State, OpenAPIConfig, LoggingConfig, HTTPException
 
+from exception.exception_handler import json_exception_handler
 from src.controller.car_controller import CarController
 from src.repository.db import MongoDatabaseConnection
 from src.services.booking_service import BookingService
@@ -100,6 +101,7 @@ app = Starlite(route_handlers=[CarController],
                on_startup=[get_db_connection, define_car_service, register_kafka_consumer,
                            define_booking_service, start_kafka_consumer],
                on_shutdown=[stop_kafka_consumer, close_db_connection],
+               exception_handlers={HTTPException: json_exception_handler},
                openapi_config=OpenAPIConfig(title="Car Service", version="1.0.0"),
                logging_config=logging_config)
 
