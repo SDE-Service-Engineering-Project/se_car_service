@@ -3,10 +3,11 @@ The currency converter retrieves the current exchange rates from the European Ce
 
 ## Tools and Technologies
 
-Language: Python 3.11
-XML parsing library: lxml
-gRPC library: grpcio
-Test framework: Pytest
+* Language: Python 3.11
+* XML parsing library: lxml
+* gRPC library: grpcio
+* Test framework: Pytest
+
 ## Data Model
 
 None, the currencies are not persisted in any database. The rates are only kept in memory.
